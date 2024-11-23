@@ -2,13 +2,15 @@ from spotify_connection import *
 from musicas_db import *
 
 token = get_token()
-track_quantity = 2200
+track_quantity = 2201   # Colocar aqui a quantidade de músicas que você tem favoritadas
 tracks = []
 i = 0
-#parei nesse loop. não testei direito rodando com o loop, mas chamando 10 sozinhos funcionou
 while i < track_quantity:
-    tracks.append(get_liked_tracks(token=token, offset= 0, limit= 50))
-    i += 50
+    liked_tracks = get_liked_tracks(token=token, offset= i, limit= 50)
+    for liked_track in liked_tracks:
+        tracks.append(liked_track)
+        i+=1
+    
 
 for track in tracks:
     nome_musica = track['name']

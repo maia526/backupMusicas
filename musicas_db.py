@@ -25,9 +25,6 @@ class ArtistaMusica(Base):
     idArtista = Column(String)
     idMusica = Column(String)
 
-
-
-
 def create_session():
     engine = create_engine('sqlite:///backupMusicas.db')
     Session = sessionmaker(bind=engine)
