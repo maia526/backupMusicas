@@ -7,9 +7,38 @@ import base64
 import webbrowser
 
 scope = "user-library-read"
-
 client_id = ""
 client_secret = ""
+
+class Spotify:
+    def __init__(self):
+        self.token = get_token()
+        
+    def get_liked_tracks(self, offset, limit):
+        user_headers = {
+            "Authorization": "Bearer " + self.token,
+            "Content-Type": "application/json"
+        }
+
+        user_params = {
+            "limit": limit,
+            "offset": offset
+        }
+
+        user_tracks_response = requests.get("https://api.spotify.com/v1/me/tracks", params=user_params, headers=user_headers)
+
+        items = user_tracks_response.json()['items']
+        tracks = [track["track"] for track in items]
+
+        liked_tracks = []
+        for track in tracks:
+            musica = {
+                "name" : track['name'],
+                "artists" : [artist['name'] for artist in track['artists']],
+                "spotify_id" : track['id']
+            }
+            liked_tracks.append(musica)
+        return liked_tracks
 
 def get_token():
     code = get_authorization_code()
@@ -44,29 +73,3 @@ def get_authorization_code():
 
     code = input("insert your authorization code here: ")
     return code
-
-def get_liked_tracks(token, offset, limit):
-    user_headers = {
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-    }
-
-    user_params = {
-        "limit": limit,
-        "offset": offset
-    }
-
-    user_tracks_response = requests.get("https://api.spotify.com/v1/me/tracks", params=user_params, headers=user_headers)
-
-    items = user_tracks_response.json()['items']
-    tracks = [track["track"] for track in items]
-
-    liked_tracks = []
-    for track in tracks:
-        musica = {
-            "name" : track['name'],
-            "artists" : [artist['name'] for artist in track['artists']],
-            "spotify_id" : track['id']
-        }
-        liked_tracks.append(musica)
-    return liked_tracks
