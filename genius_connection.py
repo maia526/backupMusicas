@@ -1,7 +1,7 @@
 from lyricsgenius import Genius
 from langdetect import detect
 
-acess_token = "10LhD1KafxBBhvPcj6UyMywFIcRLpKHDs7eerBbcSN0JnhDCACheaVehMjK6qQb0"
+acess_token = ""
 
 def detectarLingua(nomeMusica, nomeArtista):
     try:
